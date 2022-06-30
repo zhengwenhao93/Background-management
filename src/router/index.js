@@ -1,9 +1,15 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+
+// 公有路由表
 const publicRoutes = [
   {
     path: '/',
     name: 'login',
-    component: () => import('@/views/login/index')
+    component: () => import('../views/login')
+  },
+  {
+    path: '/',
+    component: () => import('../layout')
   }
 ]
 

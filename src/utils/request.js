@@ -1,6 +1,8 @@
 // 导入axios
 import axios from 'axios'
 
+import { ElMessage } from 'element-plus'
+
 import md5 from 'md5'
 
 import loading from './loading'
@@ -35,23 +37,36 @@ service.interceptors.response.use((response) => {
   // 关闭loading加载
   loading.close()
 
-  // TODO token过期状态
+  const { success, data, message } = response.data
 
   // TODO 全局响应处理
 
-  return response
+  if (success) {
+    return data
+  } else {
+    _showError(message)
+    return Promise.reject(new Error(message))
+  }
 }, (error) => {
   // 关闭loading加载
   loading.close()
+  // 响应失败进行信息提示
+  _showError(error.message)
   return Promise.reject(error)
 })
+
+// 响应提示信息
+const _showError = (message) => {
+  const info = message || '发声未知错误'
+  ElMessage.error(info)
+}
 
 // 统一了传参处理
 const request = (options) => {
   if (options.method.toLowerCase() === 'get') {
     options.params = options.data || {}
   }
-  service(options)
+  return service(options)
 }
 
 // 获取icode、
