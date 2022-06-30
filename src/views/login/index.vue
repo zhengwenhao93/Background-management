@@ -8,12 +8,12 @@
     >
       <div class="title-container">
         <h3 class="title">用户登录</h3>
-        <!-- <svg-icon className="svg-language" icon="language"></svg-icon> -->
+        <svg-icon className="svg-language" icon="language"></svg-icon>
       </div>
       <el-form-item prop="username">
         <span class="svg-container">
           <el-icon>
-             <svg-icon icon="user"></svg-icon>
+            <svg-icon icon="user"></svg-icon>
           </el-icon>
         </span>
         <el-input v-model.trim="loginForm.username" />
@@ -21,7 +21,7 @@
       <el-form-item prop="password">
         <span class="svg-container">
           <el-icon>
-             <svg-icon icon="password"></svg-icon>
+            <svg-icon icon="password"></svg-icon>
           </el-icon>
         </span>
         <el-input
@@ -42,9 +42,10 @@
 </template>
 
 <script setup>
-// import UserApi from '../../api/user'
+import UserApi from '../../api/user'
 import { reactive, ref, computed } from 'vue'
 import { validatePassword } from './rule'
+import md5 from 'md5'
 
 const inputType = ref('password')
 const LoginForm = ref()
@@ -59,7 +60,7 @@ const loginRules = reactive({
     {
       required: true,
       trigger: 'blur',
-      message: '用户名必填项'
+      message: '用户名为必填项'
     }
   ],
   password: [
@@ -80,11 +81,15 @@ const handleLoginSubmit = async () => {
   await LoginForm.value.validate(async (valid) => {
     if (valid) {
       alert('登录')
-      // loginForm.password = md5(loginForm.password)
-      // const response = await UserApi.login(loginForm)
-      // console.log(response)
+      loginForm.password = md5(loginForm.password)
+      const response = await UserApi.login(loginForm)
+      console.log(response)
     }
   })
+}
+
+const handllePassWordStatus = () => {
+  inputType.value = inputType.value === 'password' ? 'text' : 'password'
 }
 </script>
 <style lang="scss" scoped>

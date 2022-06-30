@@ -9,6 +9,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "core-js": "^3.6.5",
     "element-plus": "^2.2.6",
     "md5": "^2.3.0",
